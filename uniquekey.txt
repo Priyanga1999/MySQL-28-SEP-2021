@@ -1,0 +1,98 @@
+mysql> use mydb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table Student(id int NOT NULL UNIQUE,Name varchar(20),Email varchar(25),Age int,City varchar(25));
+Query OK, 0 rows affected (0.68 sec)
+
+mysql> insert into Student(id,Name,Email,Age,City)values(1,"Preethi","preethimahibe@gmail.com",22,"Bangalore"),(2,"Suzi","suzi@gmail.com",25,"Mumbai"),(3,"Josheph","josheph@gmail.com",30,"Kolkata");
+Query OK, 3 rows affected (0.15 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> select*from Student;
++----+---------+-------------------------+------+-----------+
+| id | Name    | Email                   | Age  | City      |
++----+---------+-------------------------+------+-----------+
+|  1 | Preethi | preethimahibe@gmail.com |   22 | Bangalore |
+|  2 | Suzi    | suzi@gmail.com          |   25 | Mumbai    |
+|  3 | Josheph | josheph@gmail.com       |   30 | Kolkata   |
++----+---------+-------------------------+------+-----------+
+3 rows in set (0.01 sec)
+mysql> insert into Student(id,Name,Email,Age,City)values(1,"Pooja","pooja@gmail.com",23,"Chennai");
+ERROR 1062 (23000): Duplicate entry '1' for key 'Student.id'
+mysql> create table Student3(Id int,Roll_No int,Name varchar(20),Email varchar(20),Age int,City varchar(20),CONSTRAINT uc_rollno_email Unique(Roll_No,Email));
+Query OK, 0 rows affected (1.18 sec)
+
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(1,101,"Mahi","mahi@gmail.com",20,"Trichy"),(2,102,"Sangavi","sangavi@gmail.com",22,"Namakkal"),(3,103,"Madhi","madhi@gmail.com",28,"Mumbai");
+Query OK, 3 rows affected (0.21 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(4,104,"Swetha","mahi@gmail.com",25,"Karur");
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(3,105,"Swathi","swathi@gmail.com",26,"Chennai");
+Query OK, 1 row affected (0.22 sec)
+
+mysql> select*from Student3;
++------+---------+---------+-------------------+------+----------+
+| Id   | Roll_No | Name    | Email             | Age  | City     |
++------+---------+---------+-------------------+------+----------+
+|    1 |     101 | Mahi    | mahi@gmail.com    |   20 | Trichy   |
+|    2 |     102 | Sangavi | sangavi@gmail.com |   22 | Namakkal |
+|    3 |     103 | Madhi   | madhi@gmail.com   |   28 | Mumbai   |
+|    4 |     104 | Swetha  | mahi@gmail.com    |   25 | Karur    |
+|    3 |     105 | Swathi  | swathi@gmail.com  |   26 | Chennai  |
++------+---------+---------+-------------------+------+----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(7,105,"Saahil","saahil@gmail.com",27,"Delhi");
+Query OK, 1 row affected (0.19 sec)
+
+mysql> select*from Student3;
++------+---------+---------+-------------------+------+----------+
+| Id   | Roll_No | Name    | Email             | Age  | City     |
++------+---------+---------+-------------------+------+----------+
+|    1 |     101 | Mahi    | mahi@gmail.com    |   20 | Trichy   |
+|    2 |     102 | Sangavi | sangavi@gmail.com |   22 | Namakkal |
+|    3 |     103 | Madhi   | madhi@gmail.com   |   28 | Mumbai   |
+|    4 |     104 | Swetha  | mahi@gmail.com    |   25 | Karur    |
+|    3 |     105 | Swathi  | swathi@gmail.com  |   26 | Chennai  |
+|    7 |     105 | Saahil  | saahil@gmail.com  |   27 | Delhi    |
++------+---------+---------+-------------------+------+----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(7,103,"Kavin","saahil@gmail.com",29,"Madhurai");
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(8,104,"Kavitha","mahi@gmail.com",40,"Theni");
+ERROR 1062 (23000): Duplicate entry '104-mahi@gmail.com' for key 'Student3.uc_rollno_email'
+mysql> alter table Student3 drop index uc_rollno_email;
+Query OK, 0 rows affected (0.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into Student3(Id,Roll_No,Name,Email,Age,City)values(8,104,"Kavitha","mahi@gmail.com",40,"Theni");
+Query OK, 1 row affected (0.16 sec)
+mysql> create table Student4(Id int,Name varchar(20),Age int);
+Query OK, 0 rows affected (1.05 sec)
+
+mysql> alter table Student4 add constraint uc_id Unique(Id);
+Query OK, 0 rows affected (0.59 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into Student4(Id,Name,Age) values(1,"Jeeva",23),(2,"Sam",25);
+Query OK, 2 rows affected (0.20 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into Student4(Id,Name,Age) values(1,"Pavankumar",28);
+ERROR 1062 (23000): Duplicate entry '1' for key 'Student4.uc_id'
+mysql> insert into Student4(Id,Name,Age)values(NULL,"Monisha",23);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into Student4(Id,Name,Age)values(NULL,"Monika",28);
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into Student4(Id,Name,Age)values(NULL,"Divya",90);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into Student4(Id,Name,Age)values(NULL,"saravana",91);
+Query OK, 1 row affected (0.15 sec)
+

@@ -1,0 +1,54 @@
+mysql> use mydb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table login(id int auto_increment primary key,username varchar(20),password varchar(20),email varchar(25));
+Query OK, 0 rows affected (2.03 sec)
+
+mysql> insert into login(id,username,password,email)values(1,"Yuvasri",1234,"yuva@gmail.com"),(2,"Ragini",3456,"ragini@gmail.com");
+Query OK, 2 rows affected (0.20 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+mysql> insert into login(id,username,password,email)values(1,"Sunidhi",5567,"sunidhi@gmail.com");
+ERROR 1062 (23000): Duplicate entry '1' for key 'login.PRIMARY'
+mysql> insert into login(id,username,password,email)values(NULL,"Nadhiya",789,"nadhiya@gmail.com");
+Query OK, 1 row affected (0.13 sec)
+mysql> insert into login(id,username,password,email)values(null,"hello",12347869,"hello@gmail.com");
+Query OK, 1 row affected (0.21 sec)
+
+mysql> select*from login;
++----+----------+----------+-------------------+
+| id | username | password | email             |
++----+----------+----------+-------------------+
+|  1 | Yuvasri  | 1234     | yuva@gmail.com    |
+|  2 | Ragini   | 3456     | ragini@gmail.com  |
+|  3 | Nadhiya  | 789      | nadhiya@gmail.com |
+|  4 | hello    | 12347869 | hello@gmail.com   |
++----+----------+----------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> create table login1(
+    -> id int,
+    -> username varchar(20),
+    -> password int,
+    -> email varchar(20),
+    -> primary key(id,username));
+Query OK, 0 rows affected (1.74 sec)
+
+mysql> insert into login1(id,username,password,email)values(2,"Balaji",123,"bala@gmail.com"),(4,"Nisha",345,"nisha@gmail.com");
+Query OK, 2 rows affected (0.16 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select*from login1;
++----+----------+----------+-----------------+
+| id | username | password | email           |
++----+----------+----------+-----------------+
+|  2 | Balaji   |      123 | bala@gmail.com  |
+|  4 | Nisha    |      345 | nisha@gmail.com |
++----+----------+----------+-----------------+
+2 rows in set (0.00 sec)
+mysql> insert into login1(id,username,password,email)values(2,"Ishwarya",4456,"ishu@gmail.com");
+Query OK, 1 row affected (0.15 sec)
+mysql> insert into login1(id,username,password,email)values(4,"Nisha",999,"nisha123@gmail.com");
+ERROR 1062 (23000): Duplicate entry '4-Nisha' for key 'login1.PRIMARY'
+

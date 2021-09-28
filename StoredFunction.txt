@@ -1,0 +1,135 @@
+mysql> use mydb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> DELIMITER $$
+mysql> create function greet(name varchar(20)) returns varchar(20) deterministic begin return name; end $$
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> DELIMITER :
+mysql> SELECT greet("Preethi"):
++------------------+
+| greet("Preethi") |
++------------------+
+| Preethi          |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> DELIMITER $$
+mysql> CREATE FUNCTION greeting(name varchar(20))
+    -> returns varchar(20)
+    -> deterministic
+    -> begin
+    -> return concat("Hello",name);
+    -> end $$
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> DELIMITER :
+mysql> SELECT greeting("Priya"):
++-------------------+
+| greeting("Priya") |
++-------------------+
+| HelloPriya        |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> use mydb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select*from customer;
++------+----------+------------+------+
+| id   | name     | occupation | age  |
++------+----------+------------+------+
+|    1 | Pooja    | Engineer   |   32 |
+|    2 | Joseph   | Developer  |   30 |
+|    3 | John     | Leader     |   25 |
+|    4 | Srinidhi | Scientist  |   40 |
+|    5 | Sasi     | Actor      |   29 |
++------+----------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> DELIMITER $$  
+mysql> CREATE FUNCTION Customer_Occupation(age int)
+    -> RETURNS VARCHAR(20)  
+    -> DETERMINISTIC  
+    -> BEGIN
+    -> DECLARE customer_occupation VARCHAR(20);  
+    -> IF age > 35 THEN  
+    -> SET customer_occupation = 'Scientist'; 
+    -> ELSEIF (age <= 35 AND age>=30) THEN
+    -> SET customer_occupation = 'Engineer'; 
+    -> ELSEIF age < 30 THEN
+    -> SET customer_occupation = 'Actor';  
+    -> END IF;  
+    -> -- return the customer occupation  
+    -> RETURN (customer_occupation);  
+    -> END $$
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> delimiter :
+mysql> select Customer_Occupation(30):
++-------------------------+
+| Customer_Occupation(30) |
++-------------------------+
+| Engineer                |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> select name,age,Customer_Occupation(age) from customer ORDER BY age;
++----------+------+--------------------------+
+| name     | age  | Customer_Occupation(age) |
++----------+------+--------------------------+
+| John     |   25 | Actor                    |
+| Sasi     |   29 | Actor                    |
+| Joseph   |   30 | Engineer                 |
+| Pooja    |   32 | Engineer                 |
+| Srinidhi |   40 | Scientist                |
++----------+------+--------------------------+
+5 rows in set (0.00 sec)
+mysql> DELIMITER $$
+mysql> create procedure GetCustomerDetail()
+    -> BEGIN
+    -> SELECT name,age,Customer_Occupation(age) from customer ORDER BY age;
+    -> end $$
+Query OK, 0 rows affected (0.28 sec)
+mysql> CALL GetCustomerDetail():
++----------+------+--------------------------+
+| name     | age  | Customer_Occupation(age) |
++----------+------+--------------------------+
+| John     |   25 | Actor                    |
+| Sasi     |   29 | Actor                    |
+| Joseph   |   30 | Engineer                 |
+| Pooja    |   32 | Engineer                 |
+| Srinidhi |   40 | Scientist                |
++----------+------+--------------------------+
+5 rows in set (0.00 sec)
+mysql> CALL GetCustomerDetail();\G
+*************************** 1. row ***************************
+                    name: John
+                     age: 25
+Customer_Occupation(age): Actor
+*************************** 2. row ***************************
+                    name: Sasi
+                     age: 29
+Customer_Occupation(age): Actor
+*************************** 3. row ***************************
+                    name: Joseph
+                     age: 30
+Customer_Occupation(age): Engineer
+*************************** 4. row ***************************
+                    name: Pooja
+                     age: 32
+Customer_Occupation(age): Engineer
+*************************** 5. row ***************************
+                    name: Srinidhi
+                     age: 40
+Customer_Occupation(age): Scientist
+5 rows in set (0.00 sec)
+
+
+
+ 
+
